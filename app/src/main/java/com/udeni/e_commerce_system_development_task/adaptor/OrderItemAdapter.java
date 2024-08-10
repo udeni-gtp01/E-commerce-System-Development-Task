@@ -60,8 +60,8 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.View
         // contents of the view with that element
 //        viewHolder.getTextView().setText(localDataSet.get(position).getReceiptNumber());
         Order c = localDataSet.get(position);
-        if (c!=null){
-            viewHolder.getTextView().setText(String.valueOf(c.getOrderItems()));
+//        if (c!=null){
+            viewHolder.getTextView().setText(String.valueOf(c.getOrderNumber()));
 //        viewHolder.setOnItemClickListener(listener);
 //        viewHolder.itemView.setOnClickListener(listener);
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +72,7 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.View
                     }
                 }
             });
-        }
+//        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)

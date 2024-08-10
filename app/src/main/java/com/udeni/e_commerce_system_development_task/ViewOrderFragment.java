@@ -4,38 +4,30 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.udeni.e_commerce_system_development_task.databinding.FragmentViewOrderBinding;
-import com.udeni.e_commerce_system_development_task.databinding.FragmentViewOrderListBinding;
-import com.udeni.e_commerce_system_development_task.model.ParcelableOrderItem;
+import com.udeni.e_commerce_system_development_task.model.Order;
 
-import dagger.hilt.android.AndroidEntryPoint;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ViewOrderFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 //@AndroidEntryPoint
 public class ViewOrderFragment extends Fragment {
-    ParcelableOrderItem orderItem;
+    Order order;
     private FragmentViewOrderBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-             orderItem= getArguments().getParcelable("orderItem");
-            if (orderItem != null) {
+             order= getArguments().getParcelable("order");
+            if (order != null) {
                 // Access the data from the ParcelableOrderItem
-                String itemCode = orderItem.getItemCode();
-                double qty = orderItem.getQty();
-                double itemPrice = orderItem.getItemPrice();
+//                String itemCode = order.getOrderNumber();
+//                double qty = order.getDateTime();
+//                double itemPrice = order.getDateTime();
 
 
             }
@@ -55,7 +47,7 @@ public class ViewOrderFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.setLifecycleOwner(this);
-        binding.textView.setText(String.valueOf(orderItem.getItemCode()));
+        binding.textView.setText(order.getCustomer().getName());
 
     }
 }

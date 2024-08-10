@@ -13,6 +13,7 @@
         android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_height="315dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="208dp"
         android:text="@string/hello_blank_fragment2"
         app:layout_constraintEnd_toEndOf="parent"

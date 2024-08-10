@@ -32,6 +32,7 @@ public interface DatabaseDao {
     @Query("Select * from " + AppConstant.TABLE_ORDER)
     LiveData<List<Order>> getAllOrders();
 
-    @Query("Select * from " + AppConstant.TABLE_ORDER)
-    List<Order> getAllOrders1();
+    @Query("Select * from " + AppConstant.TABLE_CUSTOMER + " WHERE customerId = :customerId")
+    Customer getCustomerById(int customerId);
+
 }

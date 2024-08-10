@@ -18,7 +18,8 @@ public class DatabaseRepository {
     private final DatabaseDao databaseDao;
     private final Executor executor;
     private LiveData<List<Order>> orderList;
-    private MutableLiveData<Boolean> isSaved;
+    private final MutableLiveData<Boolean> isDataSaved = new MutableLiveData<>(false);
+
 
     @Inject
     public DatabaseRepository(DatabaseDao databaseDao, Executor executor) {
@@ -32,7 +33,7 @@ public class DatabaseRepository {
             databaseDao.insertItems(items);
             databaseDao.insertOrders(orders);
             databaseDao.insertOrderItems(orderItems);
-            isSaved.postValue(true);
+            isDataSaved.postValue(true);
         });
     }
 
@@ -59,31 +60,15 @@ public class DatabaseRepository {
             databaseDao.insertOrderItems(orderItems);
         });
     }
-
+    public LiveData<Boolean> isDataSaved() {
+        return isDataSaved;
+    }
     public LiveData<List<Order>> getOrderList() {
-//        if (orderList == null) {
-//            orderList = new MutableLiveData<>();
-//            // ... (Load orders from database or set an empty list) ...
-//            searchOrderList();
-//        }
-
-        return orderList;
+        return databaseDao.getAllOrders();
     }
 
-    public void searchOrderList() {
-        executor.execute(() -> {
-//            this.orderList = databaseDao.getAllOrders();
-//            Log.d("%%%%%%%%%%%",this.orderList.getValue().size()+"");
-            this.orderList = databaseDao.getAllOrders();
-//            List<com.udeni.e_commerce_system_development_task.model.Order> modelOrders=new ArrayList<>();
-//            for(Order order:o){
-//                com.udeni.e_commerce_system_development_task.model.Order modelOrder=new com.udeni.e_commerce_system_development_task.model.Order();
-//                modelOrder.setOrderNumber(String.valueOf(order.getReceiptNumber()));
-//                modelOrders.add(modelOrder);
-//            }
-//            MutableLiveData<List<com.udeni.e_commerce_system_development_task.model.Order>> liveData=new MutableLiveData<>();
-//            liveData.postValue(modelOrders);
-//            this.orderList=liveData;
-        });
+    public Customer getCustomerById(int customerId) {
+        return databaseDao.getCustomerById(customerId);
     }
+
 }
