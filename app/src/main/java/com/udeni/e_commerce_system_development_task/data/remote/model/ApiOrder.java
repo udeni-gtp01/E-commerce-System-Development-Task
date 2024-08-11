@@ -1,4 +1,4 @@
-package com.udeni.e_commerce_system_development_task.data.remote;
+package com.udeni.e_commerce_system_development_task.data.remote.model;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -7,16 +7,16 @@ import java.util.List;
 public class ApiOrder {
     @SerializedName("receiptNumber")
     private int receiptNumber;
+
     @SerializedName("customerId")
     private int customerId;
+
     @SerializedName("dateTime")
     private String dateTime;
-//    private int receiptNumber;
-//    private int customerId;
-//    private String dateTime;
+
     @SerializedName("orderItems")
     private List<ApiOrderItem> orderItems;
-//
+
     public int getReceiptNumber() {
         return receiptNumber;
     }
@@ -48,6 +48,4 @@ public class ApiOrder {
     public void setOrderItems(List<ApiOrderItem> orderItems) {
         this.orderItems = orderItems;
     }
-
-    // Constructors, getters, and setters
 }

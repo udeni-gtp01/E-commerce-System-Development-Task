@@ -1,4 +1,4 @@
-package com.udeni.e_commerce_system_development_task.database.entity;
+package com.udeni.e_commerce_system_development_task.data.local.database.entity;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -39,5 +39,4 @@ public class Item {
     public void setItemPrice(double itemPrice) {
         this.itemPrice = itemPrice;
     }
-
 }

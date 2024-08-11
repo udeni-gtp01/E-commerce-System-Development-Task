@@ -1,14 +1,13 @@
-package com.udeni.e_commerce_system_development_task.database.entity;
+package com.udeni.e_commerce_system_development_task.data.local.database.entity;
 
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 @Entity(primaryKeys = {"receiptNumber", "itemCode"})
 public class OrderItem {
     private int receiptNumber;
     private int itemCode;
-    private double qty; // Or double for fractional quantities
-    private double itemPrice; // Price per unit{
+    private double qty;
+    private double itemPrice;
 
     public OrderItem(int receiptNumber, int itemCode, double qty, double itemPrice) {
         this.receiptNumber = receiptNumber;
@@ -16,12 +15,7 @@ public class OrderItem {
         this.qty = qty;
         this.itemPrice = itemPrice;
     }
-//    @Relation(
-//            parentColumn = "id",
-//            entityColumn = "itemId",
-//            associateBy = @Junction(OrderHasItems.class)
-//    )
-//    private List<Order> orders;
+
     public int getItemCode() {
         return itemCode;
     }
@@ -53,12 +47,4 @@ public class OrderItem {
     public void setReceiptNumber(int receiptNumber) {
         this.receiptNumber = receiptNumber;
     }
-
-//    public List<Order> getOrders() {
-//        return orders;
-//    }
-
-//    public void setOrders(List<Order> orders) {
-//        this.orders = orders;
-//    }
 }

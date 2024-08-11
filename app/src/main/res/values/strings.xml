@@ -4,4 +4,5 @@
     <string name="hello_blank_fragment1">Hello blank 1st fragment</string>
     <string name="hello_blank_fragment2">Hello blank 2nd fragment</string>
     <string name="element_text">order item</string>
+
 </resources>

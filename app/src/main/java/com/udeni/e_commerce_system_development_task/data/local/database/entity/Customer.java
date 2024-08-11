@@ -1,18 +1,21 @@
-package com.udeni.e_commerce_system_development_task.data.remote;
+package com.udeni.e_commerce_system_development_task.data.local.database.entity;
 
-import com.google.gson.annotations.SerializedName;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-public class ApiCustomer {
-    @SerializedName("customerId")
+@Entity
+public class Customer {
+    @PrimaryKey
     private int customerId;
-    @SerializedName("name")
     private String name;
-    @SerializedName("contact")
     private String contact;
-//    private int customerId;
-//    private String name;
-//    private String contact;
-//
+
+    public Customer(int customerId, String name, String contact) {
+        this.customerId = customerId;
+        this.name = name;
+        this.contact = contact;
+    }
+
     public int getCustomerId() {
         return customerId;
     }
@@ -36,6 +39,4 @@ public class ApiCustomer {
     public void setContact(String contact) {
         this.contact = contact;
     }
-
-    // Constructors, getters, and setters
 }

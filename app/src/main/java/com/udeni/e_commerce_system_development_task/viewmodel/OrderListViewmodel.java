@@ -7,17 +7,19 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.udeni.e_commerce_system_development_task.data.remote.ApiCustomer;
-import com.udeni.e_commerce_system_development_task.data.remote.ApiItem;
-import com.udeni.e_commerce_system_development_task.data.remote.ApiOrder;
-import com.udeni.e_commerce_system_development_task.data.remote.ApiOrderItem;
-import com.udeni.e_commerce_system_development_task.data.remote.ApiResponse;
+import com.udeni.e_commerce_system_development_task.data.remote.model.ApiCustomer;
+import com.udeni.e_commerce_system_development_task.data.remote.model.ApiItem;
+import com.udeni.e_commerce_system_development_task.data.remote.model.ApiOrder;
+import com.udeni.e_commerce_system_development_task.data.remote.model.ApiOrderItem;
+import com.udeni.e_commerce_system_development_task.data.remote.model.ApiResponse;
 import com.udeni.e_commerce_system_development_task.data.remote.repository.OrderApiRepository;
-import com.udeni.e_commerce_system_development_task.database.entity.Item;
-import com.udeni.e_commerce_system_development_task.database.entity.Order;
-import com.udeni.e_commerce_system_development_task.database.entity.OrderItem;
-import com.udeni.e_commerce_system_development_task.database.repository.DatabaseRepository;
-import com.udeni.e_commerce_system_development_task.database.entity.Customer;
+import com.udeni.e_commerce_system_development_task.data.local.database.entity.Customer;
+import com.udeni.e_commerce_system_development_task.data.local.database.entity.Item;
+import com.udeni.e_commerce_system_development_task.data.local.database.entity.Order;
+import com.udeni.e_commerce_system_development_task.data.local.database.entity.OrderItem;
+import com.udeni.e_commerce_system_development_task.data.local.database.entity.view.OrderItemWithItem;
+import com.udeni.e_commerce_system_development_task.data.local.database.entity.view.OrderWithItems;
+import com.udeni.e_commerce_system_development_task.data.local.repository.DatabaseRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +35,8 @@ import retrofit2.Response;
 public class OrderListViewmodel extends ViewModel {
     private final OrderApiRepository orderApiRepository;
     private final DatabaseRepository databaseRepository;
-    private MutableLiveData<List<Order>> orderList;
+    private final String TAG = this.getClass().getSimpleName();
+    private MutableLiveData<List<OrderWithItems>> orderList;
 
     @Inject
     OrderListViewmodel(OrderApiRepository orderApiRepository, DatabaseRepository databaseRepository) {
@@ -43,69 +46,38 @@ public class OrderListViewmodel extends ViewModel {
 
         databaseRepository.isDataSaved().observeForever(isSaved -> {
             if (isSaved) {
-                loadOrdersFromDatabase();
+                getAllOrdersWithItems();
             }
         });
     }
-    // Create a LiveData with a String
-//    private LiveData<List<Order>> orderList;
 
-    public LiveData<List<Order>> getOrderList() {
-//        if (orderList == null) {
-//            orderList = new MutableLiveData<List<Order>>();
-//        }
-        if (orderList != null && orderList.getValue() != null) {
-        }
-        return orderList;
-    }
-
-    public void getOrders() {
-
+    public void saveDataToDatabase() {
         Call<ApiResponse> apiCall = orderApiRepository.getOrdersFromApi();
-//            final Response<ApiResponse>[] apiResponse = new Response[]{null};
         apiCall.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.isSuccessful()) {
                     ApiResponse apiResponse = response.body();
-//                    getApiResponse().setValue(apiResponse);
-                    Log.d("******", "success");
                     List<Customer> customers = getCustomers(apiResponse);
                     List<Item> items = getItems(apiResponse);
                     List<Order> orders = getOrders(apiResponse);
                     List<OrderItem> orderItems = getOrderItems(apiResponse);
                     databaseRepository.saveToDatabase(customers, items, orders, orderItems);
                 } else {
-                    Log.d("******", "unsuccessful");
-//                    getOrderList().setValue(new ArrayList<>());
-                    // Handle error cases here, e.g., log the error, return a default value, or throw an exception
-//                    Log.e("OrderApiRepository", "Error fetching orders: " + apiResponse[0] + " " + apiResponse[0]);
-//                        return new ApiResponse(); // Or handle the error appropriately
+                    Log.d(TAG, "Unsuccessful response");
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable throwable) {
-                Log.e("OrderApiRepository", "Exception fetching orders");
-                Log.d("******", "failure");
-//                getOrderList().setValue(new ArrayList<>());
-            }
-        });
-//        databaseRepository.searchOrderList();
-//        dbOrderList=databaseRepository.getOrderList();
-
-    }
-
-    private void loadOrdersFromDatabase() {
-        // Fetch orders from the database
-        LiveData<List<Order>> dbOrders = databaseRepository.getOrderList();
-        dbOrders.observeForever(orders -> {
-            if (orders != null) {
-                orderList.postValue(orders);
+                Log.e(TAG, "Exception fetching orders");
             }
         });
     }
 
+    public LiveData<List<OrderWithItems>> getAllOrdersWithItems() {
+        return databaseRepository.getAllOrdersWithItems();
+    }
 
     private List<Item> getItems(ApiResponse apiResponse) {
         List<ApiItem> apiItems = apiResponse.getItems();
@@ -154,21 +126,33 @@ public class OrderListViewmodel extends ViewModel {
         return customers;
     }
 
-    public List<com.udeni.e_commerce_system_development_task.model.Order> convertToModelOrders(List<Order> orders) {
-        List<com.udeni.e_commerce_system_development_task.model.Order> modelOrders = new ArrayList<>();
-
-        for (com.udeni.e_commerce_system_development_task.database.entity.Order order : orders) {
-            com.udeni.e_commerce_system_development_task.model.Order modelOrder = new com.udeni.e_commerce_system_development_task.model.Order();
-            modelOrder.setOrderNumber(String.valueOf(order.getReceiptNumber()));
-            modelOrder.setDateTime(order.getDateTime());
-            modelOrder.setCustomer(convertToModelCustomer(databaseRepository.getCustomerById(order.getCustomerId())));
+    public List<com.udeni.e_commerce_system_development_task.data.local.model.Order> convertToModelOrders(List<OrderWithItems> ordersWithItems) {
+        List<com.udeni.e_commerce_system_development_task.data.local.model.Order> modelOrders = new ArrayList<>();
+        for (OrderWithItems orderWithItems : ordersWithItems) {
+            com.udeni.e_commerce_system_development_task.data.local.model.Order modelOrder = new com.udeni.e_commerce_system_development_task.data.local.model.Order();
+            modelOrder.setOrderNumber(String.valueOf(orderWithItems.order.getReceiptNumber()));
+            modelOrder.setDateTime(orderWithItems.order.getDateTime());
+            modelOrder.setCustomer(convertToModelCustomer(orderWithItems.customer));
+            modelOrder.setOrderItems(convertToModelOrderItems(orderWithItems.orderItemsWithItem));
             modelOrders.add(modelOrder);
-            Log.d("d2", modelOrder.getOrderNumber());
-
         }
         return modelOrders;
     }
-    private com.udeni.e_commerce_system_development_task.model.Customer convertToModelCustomer(Customer customer) {
-        return new com.udeni.e_commerce_system_development_task.model.Customer(customer.getCustomerId(), customer.getName(), customer.getContact());
+
+    private List<com.udeni.e_commerce_system_development_task.data.local.model.OrderItem> convertToModelOrderItems(List<OrderItemWithItem> orderItems) {
+        List<com.udeni.e_commerce_system_development_task.data.local.model.OrderItem> modelOrderItems = new ArrayList<>();
+        for (OrderItemWithItem orderItemWithItem : orderItems) {
+            com.udeni.e_commerce_system_development_task.data.local.model.OrderItem modelOrderItem = new com.udeni.e_commerce_system_development_task.data.local.model.OrderItem(convertToModelItem(orderItemWithItem.item), orderItemWithItem.orderItem.getQty(), orderItemWithItem.orderItem.getItemPrice());
+            modelOrderItems.add(modelOrderItem);
+        }
+        return modelOrderItems;
+    }
+
+    private com.udeni.e_commerce_system_development_task.data.local.model.Item convertToModelItem(Item item) {
+        return new com.udeni.e_commerce_system_development_task.data.local.model.Item(String.valueOf(item.getItemCode()), item.getName(), item.getItemPrice());
+    }
+
+    private com.udeni.e_commerce_system_development_task.data.local.model.Customer convertToModelCustomer(Customer customer) {
+        return new com.udeni.e_commerce_system_development_task.data.local.model.Customer(customer.getCustomerId(), customer.getName(), customer.getContact());
     }
 }

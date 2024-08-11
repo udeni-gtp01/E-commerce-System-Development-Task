@@ -1,19 +1,22 @@
-package com.udeni.e_commerce_system_development_task.model;
+package com.udeni.e_commerce_system_development_task.data.remote.model;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+import com.google.gson.annotations.SerializedName;
 
-public class Item {
+public class ApiItem {
+    @SerializedName("itemCode")
+    private int itemCode;
 
-    private String itemCode;
+    @SerializedName("name")
     private String name;
+
+    @SerializedName("itemPrice")
     private double itemPrice;
 
-    public String getItemCode() {
+    public int getItemCode() {
         return itemCode;
     }
 
-    public void setItemCode(String itemCode) {
+    public void setItemCode(int itemCode) {
         this.itemCode = itemCode;
     }
 
@@ -32,6 +35,4 @@ public class Item {
     public void setItemPrice(double itemPrice) {
         this.itemPrice = itemPrice;
     }
-
-
 }

@@ -1,13 +1,12 @@
-package com.udeni.e_commerce_system_development_task.model;
+package com.udeni.e_commerce_system_development_task.data.local.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import java.util.List;
+
 public class Order implements Parcelable {
 
     private String orderNumber;
@@ -15,13 +14,9 @@ public class Order implements Parcelable {
     private Customer customer;
     private List<OrderItem> orderItems;
 
-//    public Order(String orderNumber, long dateTime, Customer customer, List<OrderItem> orderItems) {
-//        this.orderNumber = orderNumber;
-//        this.dateTime = dateTime;
-//        this.customer = customer;
-//        this.orderItems = orderItems;
-//    }
-public Order(){}
+    public Order() {
+    }
+
     protected Order(Parcel in) {
         orderNumber = in.readString();
         dateTime = in.readString();
@@ -73,7 +68,6 @@ public Order(){}
         this.orderItems = orderItems;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -85,5 +79,15 @@ public Order(){}
         dest.writeString(dateTime);
         dest.writeParcelable(customer, flags);
         dest.writeTypedList(orderItems);
+    }
+
+    public double calculateTotalAmount() {
+        double totalPrice = 0;
+        if (orderItems != null) {
+            for (OrderItem item : orderItems) {
+                totalPrice += item.getQty() * item.getItemPrice();
+            }
+        }
+        return totalPrice;
     }
 }

@@ -1,36 +1,37 @@
-package com.udeni.e_commerce_system_development_task.model;
+package com.udeni.e_commerce_system_development_task.data.local.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class OrderItem implements Parcelable {
+import androidx.annotation.NonNull;
+
+public class Item implements Parcelable {
+
     private String itemCode;
-    private double qty;
+    private String name;
     private double itemPrice;
 
-    public OrderItem() {}
-
-    public OrderItem(String itemCode, double qty, double itemPrice) {
+    public Item(String itemCode, String name, double itemPrice) {
         this.itemCode = itemCode;
-        this.qty = qty;
+        this.name = name;
         this.itemPrice = itemPrice;
     }
 
-    protected OrderItem(Parcel in) {
+    protected Item(Parcel in) {
         itemCode = in.readString();
-        qty = in.readDouble();
+        name = in.readString();
         itemPrice = in.readDouble();
     }
 
-    public static final Creator<OrderItem> CREATOR = new Creator<OrderItem>() {
+    public static final Creator<Item> CREATOR = new Creator<Item>() {
         @Override
-        public OrderItem createFromParcel(Parcel in) {
-            return new OrderItem(in);
+        public Item createFromParcel(Parcel in) {
+            return new Item(in);
         }
 
         @Override
-        public OrderItem[] newArray(int size) {
-            return new OrderItem[size];
+        public Item[] newArray(int size) {
+            return new Item[size];
         }
     };
 
@@ -42,12 +43,12 @@ public class OrderItem implements Parcelable {
         this.itemCode = itemCode;
     }
 
-    public double getQty() {
-        return qty;
+    public String getName() {
+        return name;
     }
 
-    public void setQty(double qty) {
-        this.qty = qty;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public double getItemPrice() {
@@ -64,9 +65,9 @@ public class OrderItem implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(itemCode);
-        dest.writeDouble(qty);
+        dest.writeString(name);
         dest.writeDouble(itemPrice);
     }
 }

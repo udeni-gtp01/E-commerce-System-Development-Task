@@ -1,10 +1,7 @@
-package com.udeni.e_commerce_system_development_task.model;
+package com.udeni.e_commerce_system_development_task.data.local.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 public class Customer implements Parcelable {
     private int customerId;
@@ -17,10 +14,9 @@ public class Customer implements Parcelable {
         this.contact = contact;
     }
 
-    // Default constructor
-    public Customer() {}
+    public Customer() {
+    }
 
-    // Constructor for Parcelable
     protected Customer(Parcel in) {
         customerId = in.readInt();
         name = in.readString();

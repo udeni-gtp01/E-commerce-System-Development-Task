@@ -1,4 +1,4 @@
-package com.udeni.e_commerce_system_development_task;
+package com.udeni.e_commerce_system_development_task.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,10 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.udeni.e_commerce_system_development_task.databinding.FragmentViewOrderBinding;
-import com.udeni.e_commerce_system_development_task.model.Order;
+import com.udeni.e_commerce_system_development_task.data.local.model.Order;
 
-
-//@AndroidEntryPoint
 public class ViewOrderFragment extends Fragment {
     Order order;
     private FragmentViewOrderBinding binding;
@@ -22,7 +20,7 @@ public class ViewOrderFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-             order= getArguments().getParcelable("order");
+            order = getArguments().getParcelable("order");
             if (order != null) {
                 // Access the data from the ParcelableOrderItem
 //                String itemCode = order.getOrderNumber();
@@ -37,9 +35,7 @@ public class ViewOrderFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-//         binding= inflater.inflate(R.layout.fragment_view_order, container, false);
-        binding=FragmentViewOrderBinding.inflate(inflater,container,false);
+        binding = FragmentViewOrderBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -48,6 +44,5 @@ public class ViewOrderFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         binding.setLifecycleOwner(this);
         binding.textView.setText(order.getCustomer().getName());
-
     }
 }
