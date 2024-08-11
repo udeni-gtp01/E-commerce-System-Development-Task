@@ -1,7 +1,6 @@
-package com.udeni.e_commerce_system_development_task;
+package com.udeni.e_commerce_system_development_task.ui;
 
 import android.os.Bundle;
-import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,11 +9,17 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
+import com.udeni.e_commerce_system_development_task.R;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -23,13 +28,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        Fragment fragment_1 = new ViewOrderListFragment();
-        Fragment fragment_2 = new ViewOrderFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fl_fragment, fragment_1).commit();
-
-        Button btn_fragment = findViewById(R.id.btn_fragment);
-        btn_fragment.setOnClickListener(v -> {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fl_fragment, fragment_2).addToBackStack(null).commit();
-        });
+        Fragment viewOrderListFragment = new ViewOrderListFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_fragment, viewOrderListFragment).commit();
     }
 }
