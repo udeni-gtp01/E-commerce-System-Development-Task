@@ -1,25 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/frameLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.ViewOrderListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="0dp"
-        android:layout_height="315dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="208dp"
-        android:text="@string/hello_blank_fragment2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_medium"
+        tools:context=".ui.OrderDetailFragment">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_medium">
+
+            <TextView
+                android:id="@+id/tv_total_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold"
+                tools:text="6001.0" />
+
+            <TextView
+                android:id="@+id/tv_currency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lkr"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/text_size_medium" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_margin="@dimen/margin_small"
+            android:background="@android:color/darker_gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_small">
+
+            <TextView
+                android:id="@+id/tv_order_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/text_size_small"
+                tools:text="Order: #1" />
+
+            <TextView
+                android:id="@+id/tv_customer_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/text_size_small"
+                tools:text="Customer: John Doe" />
+
+            <TextView
+                android:id="@+id/tv_order_datetime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/text_size_small"
+                tools:text="Date time: 2023-01-01 10:00:00" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_margin="@dimen/margin_small"
+            android:background="@android:color/darker_gray" />
+
+        <ListView
+            android:id="@+id/lv_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@android:color/darker_gray"
+            android:padding="@dimen/padding_small" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_margin="@dimen/margin_small"
+            android:background="@android:color/darker_gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="fill_horizontal"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_small">
+
+            <TextView
+                android:id="@+id/tv_total_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:text="@string/total"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_medium" />
+
+            <TextView
+                android:id="@+id/tv_total_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_medium"
+                tools:layout_gravity="end"
+                tools:text="6001.0" />
+        </LinearLayout>
+    </LinearLayout>
 </layout>

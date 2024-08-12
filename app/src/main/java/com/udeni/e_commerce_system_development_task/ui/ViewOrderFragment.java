@@ -4,16 +4,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.udeni.e_commerce_system_development_task.databinding.FragmentViewOrderBinding;
+import com.udeni.e_commerce_system_development_task.R;
 import com.udeni.e_commerce_system_development_task.data.local.model.Order;
+import com.udeni.e_commerce_system_development_task.databinding.FragmentViewOrderBinding;
+import com.udeni.e_commerce_system_development_task.ui.adaptor.OrderItemAdapter;
 
 public class ViewOrderFragment extends Fragment {
-    Order order;
+    private Order order;
     private FragmentViewOrderBinding binding;
 
     @Override
@@ -21,14 +25,6 @@ public class ViewOrderFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             order = getArguments().getParcelable("order");
-            if (order != null) {
-                // Access the data from the ParcelableOrderItem
-//                String itemCode = order.getOrderNumber();
-//                double qty = order.getDateTime();
-//                double itemPrice = order.getDateTime();
-
-
-            }
         }
     }
 
@@ -43,6 +39,15 @@ public class ViewOrderFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.setLifecycleOwner(this);
-        binding.textView.setText(order.getCustomer().getName());
+        String totalAmount = String.valueOf(order.calculateTotalAmount());
+        binding.tvTotalAmount.setText(totalAmount);
+        binding.tvTotalPrice.setText(totalAmount);
+        binding.tvOrderId.setText(String.format(getString(R.string.order_number), order.getOrderNumber()));
+        binding.tvCustomerName.setText(String.format(getString(R.string.customer_name), order.getCustomer().getName()));
+        binding.tvOrderDatetime.setText(String.format(getString(R.string.date_time), order.getDateTime()));
+        ListView listView = view.findViewById(R.id.lv_items);
+        OrderItemAdapter adapter = new OrderItemAdapter(getContext(), order.getOrderItems());
+        listView.setDivider(null);
+        listView.setAdapter(adapter);
     }
 }

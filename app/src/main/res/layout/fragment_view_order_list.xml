@@ -4,11 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="orderListVM"
             type="com.udeni.e_commerce_system_development_task.viewmodel.OrderListViewmodel" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,19 +16,17 @@
         android:padding="8dp"
         tools:context=".ui.MainActivity">
 
-        <!-- Search Bar -->
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:iconifiedByDefault="false"
-            android:queryHint="Search orders..."
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:queryHint="Search orders.." />
+            app:queryHint="@string/search_order"
+            android:textSize="@dimen/text_size_small"/>
 
-        <!-- RecyclerView for displaying orders -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/orderListRecyclerView"
             android:layout_width="0dp"
