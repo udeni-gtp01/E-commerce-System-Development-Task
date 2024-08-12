@@ -7,15 +7,16 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.udeni.e_commerce_system_development_task.R;
-import com.udeni.e_commerce_system_development_task.ui.adaptor.OrderItemAdapter;
-import com.udeni.e_commerce_system_development_task.databinding.FragmentViewOrderListBinding;
 import com.udeni.e_commerce_system_development_task.data.local.model.Order;
+import com.udeni.e_commerce_system_development_task.databinding.FragmentViewOrderListBinding;
+import com.udeni.e_commerce_system_development_task.ui.adaptor.OrderItemAdapter;
 import com.udeni.e_commerce_system_development_task.viewmodel.OrderListViewmodel;
 
 import java.util.List;
@@ -26,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class ViewOrderListFragment extends Fragment {
     private FragmentViewOrderListBinding binding;
     private OrderListViewmodel orderListViewmodel;
+    private OrderItemAdapter orderAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,27 +47,29 @@ public class ViewOrderListFragment extends Fragment {
         orderListViewmodel = new ViewModelProvider(this).get(OrderListViewmodel.class);
         binding.setLifecycleOwner(this);
         binding.setOrderListVM(orderListViewmodel);
-        // Observe the order list
-//        orderListViewmodel.getOrderList().observe(getViewLifecycleOwner(), ordersWithItems -> {
-//            if (ordersWithItems != null) {
-//                List<com.udeni.e_commerce_system_development_task.model.Order> modelOrders = orderListViewmodel.convertToModelOrders(ordersWithItems);
-//                OrderItemAdapter itemAdapter = new OrderItemAdapter(modelOrders);
-//                itemAdapter.setOnItemClickListener(order -> openOrderDetailsFragment(order));
-//
-//                RecyclerView recyclerView = view.findViewById(R.id.orderListRecyclerView);
-//                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//                recyclerView.setAdapter(itemAdapter);
-//            }
-//        });
 
         orderListViewmodel.getAllOrdersWithItems().observe(getViewLifecycleOwner(), ordersWithItems -> {
             List<Order> modelOrders = orderListViewmodel.convertToModelOrders(ordersWithItems);
-            OrderItemAdapter itemAdapter = new OrderItemAdapter(modelOrders);
-            itemAdapter.setOnItemClickListener(order -> openOrderDetailsFragment(order));
+            orderAdapter = new OrderItemAdapter(modelOrders);
+            orderAdapter.setOnItemClickListener(order -> openOrderDetailsFragment(order));
 
             RecyclerView recyclerView = view.findViewById(R.id.orderListRecyclerView);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            recyclerView.setAdapter(itemAdapter);
+            recyclerView.setAdapter(orderAdapter);
+        });
+
+        // Handle search query
+        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                orderAdapter.filter(newText);
+                return false;
+            }
         });
         orderListViewmodel.saveDataToDatabase();
     }
