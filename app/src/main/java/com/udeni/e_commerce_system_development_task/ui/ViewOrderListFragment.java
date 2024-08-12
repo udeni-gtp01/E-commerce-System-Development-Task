@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.udeni.e_commerce_system_development_task.R;
 import com.udeni.e_commerce_system_development_task.data.local.model.Order;
 import com.udeni.e_commerce_system_development_task.databinding.FragmentViewOrderListBinding;
-import com.udeni.e_commerce_system_development_task.ui.adaptor.OrderItemAdapter;
+import com.udeni.e_commerce_system_development_task.ui.adaptor.OrderAdapter;
 import com.udeni.e_commerce_system_development_task.viewmodel.OrderListViewmodel;
 
 import java.util.List;
@@ -27,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class ViewOrderListFragment extends Fragment {
     private FragmentViewOrderListBinding binding;
     private OrderListViewmodel orderListViewmodel;
-    private OrderItemAdapter orderAdapter;
+    private OrderAdapter orderAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class ViewOrderListFragment extends Fragment {
 
         orderListViewmodel.getAllOrdersWithItems().observe(getViewLifecycleOwner(), ordersWithItems -> {
             List<Order> modelOrders = orderListViewmodel.convertToModelOrders(ordersWithItems);
-            orderAdapter = new OrderItemAdapter(modelOrders);
+            orderAdapter = new OrderAdapter(modelOrders);
             orderAdapter.setOnItemClickListener(order -> openOrderDetailsFragment(order));
 
             RecyclerView recyclerView = view.findViewById(R.id.orderListRecyclerView);
