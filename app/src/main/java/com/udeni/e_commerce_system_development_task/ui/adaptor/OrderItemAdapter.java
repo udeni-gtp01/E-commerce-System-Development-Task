@@ -8,17 +8,14 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.udeni.e_commerce_system_development_task.R;
 import com.udeni.e_commerce_system_development_task.data.local.model.OrderItem;
-
 import java.util.List;
 
 public class OrderItemAdapter extends BaseAdapter {
 
-    private Context context;
     private List<OrderItem> orderItems;
     private LayoutInflater inflater;
 
     public OrderItemAdapter(Context context, List<OrderItem> orderItems) {
-        this.context = context;
         this.orderItems = orderItems;
         this.inflater = LayoutInflater.from(context);
     }
